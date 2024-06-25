@@ -2,17 +2,19 @@ body {
   font-family: sans-serif;
   background-color: #e1e1e1;
   max-width: 800px;
-  margin: 20px auto;
+  margin: 0 auto;
 }
 
 select,
-button {
-  padding: 8px 12px;
+button,
+input {
+  padding: 10px 12px;
   border: 1px solid #eaeaea;
   border-radius: 6px;
   background-color: white;
   font-size: 16px;
   cursor: pointer;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .header {
@@ -22,7 +24,30 @@ button {
 }
 
 .action {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   display: flex;
   gap: 12px;
+}
+
+.input-form {
+  position: fixed;
+  bottom: 20px;
+  width: 800px;
+}
+
+.input-form > form {
+  display: flex;
+  gap: 12px;
+}
+
+.input-form input {
+  display: block;
+  flex-grow: 3;
+}
+
+.submit-btn {
+  background-color: #0054d1;
+  color: white;
+  padding: 0 48px;
+  font-weight: 700;
 }

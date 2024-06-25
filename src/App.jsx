@@ -18,6 +18,18 @@ function App() {
           <button>Clear Todo</button>
         </div>
       </div>
+
+      <div className="input-form">
+        <form>
+          <input type="text" placeholder="Add todo" />
+          <select>
+            <option value="1">Low Priority 😁</option>
+            <option value="2">Medium Priority 😎</option>
+            <option value="3">High Priority 🤯</option>
+          </select>
+          <button className="submit-btn">Add</button>
+        </form>
+      </div>
     </>
   );
 }
