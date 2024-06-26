@@ -8,10 +8,18 @@ function App() {
     setTodoItems((items) => [...items, todoItem]);
   }
 
+  function handleFinishedTodo(id) {
+    setTodoItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, finished: !item.finished } : item
+      )
+    );
+  }
+
   return (
     <>
       <Header />
-      <TodoList todoItems={todoItems} />
+      <TodoList todoItems={todoItems} onFinishedTodo={handleFinishedTodo} />
       <InputForm onAddTodo={handleAddTodo} />
     </>
   );
@@ -36,23 +44,43 @@ function Header() {
   );
 }
 
-function TodoList({ todoItems }) {
+function TodoList({ todoItems, onFinishedTodo }) {
   return (
     <div className="todo-list">
       {todoItems.map((todo) => (
-        <TodoItem todo={todo.todo} priority={todo.priority} />
+        <TodoItem key={todo.id} todo={todo} onFinishedTodo={onFinishedTodo} />
       ))}
     </div>
   );
 }
 
-function TodoItem({ todo, priority }) {
+function TodoItem({ todo, onFinishedTodo }) {
   return (
     <div className="todo-item">
-      <p>{todo}</p>
+      <p style={todo.finished ? { textDecoration: "line-through" } : {}}>
+        {todo.todo}
+      </p>
       <div className="item-action">
-        <p>{priority}</p>
-        <input type="checkbox" />
+        {todo.priority == "1" && (
+          <p style={{ color: "#0C7B17", backgroundColor: "#EBFFED" }}>
+            Low Priority 😁
+          </p>
+        )}
+        {todo.priority == "2" && (
+          <p style={{ color: "#847500", backgroundColor: "#FFFDEB" }}>
+            Medium Priority 😎
+          </p>
+        )}
+        {todo.priority == "3" && (
+          <p style={{ color: "#A41900", backgroundColor: "#FFECEB" }}>
+            High Priority 🤯
+          </p>
+        )}
+        <input
+          type="checkbox"
+          value={todo.finished}
+          onChange={() => onFinishedTodo(todo.id)}
+        />
       </div>
     </div>
   );
@@ -68,7 +96,7 @@ function InputForm({ onAddTodo }) {
     if (!todo) return;
 
     const newTodo = {
-      date: Date.now(),
+      id: Date.now(),
       todo,
       priority,
       checked: false,
