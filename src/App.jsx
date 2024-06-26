@@ -3,6 +3,7 @@ import "./index.css";
 
 function App() {
   const [todoItems, setTodoItems] = useState([]);
+  const [sortBy, setSortBy] = useState("input");
 
   function handleAddTodo(todoItem) {
     setTodoItems((items) => [...items, todoItem]);
@@ -22,26 +23,27 @@ function App() {
 
   return (
     <>
-      <Header />
+      <Header sortBy={sortBy} setSortBy={setSortBy} />
       <TodoList
         todoItems={todoItems}
         onFinishedTodo={handleFinishedTodo}
         onDeleteTodo={handleDeleteTodo}
+        sortBy={sortBy}
       />
       <InputForm onAddTodo={handleAddTodo} />
     </>
   );
 }
 
-function Header() {
+function Header({ sortBy, setSortBy }) {
   return (
     <div className="header">
       <div className="greeting">
-        <h1>Good Morning!</h1>
+        <h1>Hello 🤟🏻</h1>
         <p>Let's set your to-do list for today 🏆</p>
       </div>
       <div className="action">
-        <select>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
           <option value="input">Sort by Input</option>
           <option value="priority">Sort by Priority</option>
           <option value="finished">Sort by Finished Status</option>
@@ -52,10 +54,19 @@ function Header() {
   );
 }
 
-function TodoList({ todoItems, onFinishedTodo, onDeleteTodo }) {
+function TodoList({ todoItems, onFinishedTodo, onDeleteTodo, sortBy }) {
+  let sortedTodo;
+  if (sortBy === "input") sortedTodo = todoItems;
+  if (sortBy === "priority")
+    sortedTodo = todoItems.slice().sort((a, b) => a.priority - b.priority);
+  if (sortBy === "finished")
+    sortedTodo = todoItems
+      .slice()
+      .sort((a, b) => Number(a.finished) - Number(b.finished));
+
   return (
     <div className="todo-list">
-      {todoItems.map((todo) => (
+      {sortedTodo.map((todo) => (
         <TodoItem
           key={todo.id}
           todo={todo}
@@ -152,7 +163,7 @@ function InputForm({ onAddTodo }) {
       id: Date.now(),
       todo,
       priority,
-      checked: false,
+      finished: false,
     };
     onAddTodo(newTodo);
     setTodo("");
