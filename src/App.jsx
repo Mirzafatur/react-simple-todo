@@ -16,10 +16,18 @@ function App() {
     );
   }
 
+  function handleDeleteTodo(id) {
+    setTodoItems((items) => items.filter((item) => item.id !== id));
+  }
+
   return (
     <>
       <Header />
-      <TodoList todoItems={todoItems} onFinishedTodo={handleFinishedTodo} />
+      <TodoList
+        todoItems={todoItems}
+        onFinishedTodo={handleFinishedTodo}
+        onDeleteTodo={handleDeleteTodo}
+      />
       <InputForm onAddTodo={handleAddTodo} />
     </>
   );
@@ -44,17 +52,22 @@ function Header() {
   );
 }
 
-function TodoList({ todoItems, onFinishedTodo }) {
+function TodoList({ todoItems, onFinishedTodo, onDeleteTodo }) {
   return (
     <div className="todo-list">
       {todoItems.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} onFinishedTodo={onFinishedTodo} />
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onFinishedTodo={onFinishedTodo}
+          onDeleteTodo={onDeleteTodo}
+        />
       ))}
     </div>
   );
 }
 
-function TodoItem({ todo, onFinishedTodo }) {
+function TodoItem({ todo, onFinishedTodo, onDeleteTodo }) {
   return (
     <div className="todo-item">
       <p style={todo.finished ? { textDecoration: "line-through" } : {}}>
@@ -81,7 +94,7 @@ function TodoItem({ todo, onFinishedTodo }) {
           value={todo.finished}
           onChange={() => onFinishedTodo(todo.id)}
         />
-        <div className="delete-btn">
+        <div className="delete-btn" onClick={() => onDeleteTodo(todo.id)}>
           <svg
             width="20"
             height="20"
